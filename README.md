@@ -20,7 +20,6 @@ This is a space-themed asteroid game where players control a spaceship to dodge 
 ## How to Play
 
 - Use the **left** and **right arrow keys** to move the spaceship.
-- Press **spacebar** to fire lasers.
 - **Destroy asteroids** to gain points, but avoid collisions.
 - Absorb **power-ups** to increase firing speed.
 - The game ends if you collide with an asteroid.
