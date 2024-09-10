@@ -1,4 +1,5 @@
 import Asteroids from './Asteroids'
+import 'normalize.css';
 
 function App() {
 

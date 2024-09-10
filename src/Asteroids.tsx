@@ -152,6 +152,8 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
 
     }
 
+    setScore(currScore => currScore + asteroid.width)
+
     // Add new asteroids and mark the asteroid as destroyed
     setAsteroids(prevAsteroids => [
       ...prevAsteroids.map(a =>
@@ -338,7 +340,7 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
         const asteroidSize = Math.floor(Math.random() * (ASTEROID_SIZE_INTERVALS.large - ASTEROID_SIZE_INTERVALS.xSmall + 1)) + ASTEROID_SIZE_INTERVALS.xSmall;
         const newAsteroid = {
           id: generateUniqueId(),
-          x: Math.floor(Math.random() * (100 - (asteroidSize / 2)) + (asteroidSize / 2)),
+          x: Math.floor(Math.random() * ((100 - asteroidSize / 2) - asteroidSize / 2) + asteroidSize / 2),
           width: asteroidSize,
           rotation: Math.floor(Math.random() * 365),
           hitpoints: asteroidSize,
