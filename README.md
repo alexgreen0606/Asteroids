@@ -13,13 +13,13 @@ This is a space-themed asteroid game where players control a spaceship to dodge 
 
 ## Technology Stack
 
-- **React** for the UI and game logic.
-- **CSS** for animations and styling.
-- **HTML5** for the basic structure.
+- **React**: for the UI and game logic.
+- **CSS**: for animations and styling.
+- **HTML5**: for the basic structure.
 
 ## How to Play
 
-- Use the **left** and **right arrow keys** to move the spaceship.
+- Use the **left** and **right** arrow keys to move the spaceship.
 - **Destroy asteroids** to gain points, but avoid collisions.
 - Absorb **power-ups** to increase firing speed.
 - The game ends if you collide with an asteroid.
@@ -49,4 +49,4 @@ npm install
 npm run dev
 ```
 
-4. Open the provided `localhost` URL in your browser to start playing the game!
+4. Open the provided `localhost` in your browser to start playing the game!
