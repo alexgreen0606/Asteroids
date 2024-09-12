@@ -1,8 +1,8 @@
-# Space-Themed Asteroid Game 🚀
+# Asteroids 🚀
 
 ## Project Overview
 
-This is a space-themed asteroid game where players control a spaceship to dodge or shoot falling asteroids. The goal is to survive as long as possible while earning points by destroying asteroids. Power-ups periodically appear, boosting the spaceship’s firing speed.
+Asteroids is a space-themed game where players control a spaceship to dodge or shoot falling asteroids. The goal is to survive as long as possible while earning points by destroying asteroids. Power-ups periodically appear, boosting the spaceship’s firing speed.
 
 ## Features
 
