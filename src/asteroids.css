@@ -16,14 +16,17 @@
   font-family: 'digital-clock-font';
   color: yellow;
   position: absolute;
-  left: 1rem;
+  left: 0;
   z-index: 1000;
+  margin: .5rem;
 }
 
 .pause-play {
   position: absolute;
-  right: 1rem;
+  right: 0;
+  top: 0;
   z-index: 1000;
+  margin-top: .5vw;
 }
 
 .spaceship {
@@ -40,11 +43,11 @@
 
 .laser {
   position: absolute;
-  width: .5rem;
-  height: 3rem;
-  border-radius: 50%;
+  width: clamp(2px, 25vw, 4px);
+  height: clamp(16px, 2vw, 30px);
+  border-radius: 20%;
   animation: shoot 2s linear forwards;
-  transform: translateX(-.25rem);
+  transform: translateX(-50%);
 }
 
 .game-over {

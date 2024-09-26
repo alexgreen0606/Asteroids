@@ -388,18 +388,18 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
       {!gameOver && (
         <>
           {/* Scoreboard */}
-          < div className="scoreboard">
-            <h1>score: {score}</h1>
+          <div className="scoreboard">
+            <span style={{fontSize: '2vw'}}>score: {score}</span>
           </div>
           {/* Pause and Play Buttons */}
           <div className='pause-play'>
             {gameActive ? (
               <IconButton onClick={() => setGameActive(false)}>
-                <PauseFilled color='yellow' size='3rem' />
+                <PauseFilled color='yellow' size='2vw' />
               </IconButton>
             ) : (
               <IconButton onClick={() => setGameActive(true)}>
-                <PlayFilledAlt color='yellow' size='3rem' />
+                <PlayFilledAlt color='yellow' size='2vw' />
               </IconButton>
             )}
           </div>
