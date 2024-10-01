@@ -66,6 +66,7 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
   const [score, setScore] = useState(0);
   const [laserFiringInterval, setLaserFiringInterval] = useState(DEFAULT_LASER_FIRING_INTERVAL)
   const [shipDestroyed, setShipDestroyed] = useState(false)
+  const [showTips, setShowTips] = useState(false)
 
   /**
    * Moves the ship left or right based on the keyboard click event.
@@ -284,6 +285,18 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
   }
 
   /**
+   * Displays the game instructions once the game begins.
+   */
+  useEffect(() => {
+    if (!gameOver && gameActive) {
+      setShowTips(true)
+      setTimeout(() => {
+        setShowTips(false)
+      }, 7000)
+    }
+  }, [gameOver, gameActive])
+
+  /**
    * Links the game's active state to the inherited pause variable.
    */
   useEffect(() => {
@@ -389,7 +402,7 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
         <>
           {/* Scoreboard */}
           <div className="scoreboard">
-            <span style={{fontSize: '2vw'}}>score: {score}</span>
+            <span style={{ fontSize: '2vw' }}>score: {score}</span>
           </div>
           {/* Pause and Play Buttons */}
           <div className='pause-play'>
@@ -403,6 +416,11 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
               </IconButton>
             )}
           </div>
+          {showTips && (
+            <div className='tips'>
+              Use the arrow keys to dodge asteroids, or destroy them for points!
+            </div>
+          )}
         </>
       )}
       {/* Shaceship */}

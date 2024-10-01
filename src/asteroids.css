@@ -12,6 +12,17 @@
   animation: pulseAndFall 5s linear;
 }
 
+.tips {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  color: yellow;
+  transform: translate(-50%, -50%);
+  animation: fade 7s linear forwards;
+  font-family: 'Menlo';
+  width: 40%;
+}
+
 .scoreboard {
   font-family: 'digital-clock-font';
   color: yellow;
@@ -139,6 +150,21 @@
 
   100% {
     transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Fade Out Animation */
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
     opacity: 0;
   }
 }
