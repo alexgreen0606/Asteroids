@@ -43,7 +43,7 @@ interface AsteroidType extends AnimatedType {
   rotation: number
   hitpoints: number
   zIndex: number
-  animation?: string
+  animation: string
 }
 
 interface PowerupType extends AnimatedType {
@@ -150,6 +150,9 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
 
         for (let i = 0; i < numSplits; i++) {
 
+          const newKeyframes = generateAsteroidFallKeyframes(centerYPercent, i);
+          document.styleSheets[0].insertRule(newKeyframes, 0);
+
           // Set each new asteroid to start at the center of the destroyed asteroid
           const newAsteroid = {
             id: `${asteroid.id}-${i}`,
@@ -158,20 +161,10 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
             rotation: Math.floor(Math.random() * 365),
             hitpoints: newWidth,
             zIndex: generateRandomZIndex(),
+            animation: `fallFrom_${centerYPercent.toFixed(0)}_number_${i} 3s linear forwards`
           }
 
           newAsteroids.push(newAsteroid);
-        }
-
-        // Apply unique fall animation to each new asteroid
-        for (let i = 0; i < newAsteroids.length; i++) {
-          const newKeyframes = generateAsteroidFallKeyframes(centerYPercent, i);
-          document.styleSheets[0].insertRule(newKeyframes, 0);
-
-          newAsteroids[i] = {
-            ...newAsteroids[i],
-            animation: `fallFrom_${centerYPercent.toFixed(0)}_number_${i} 3s linear forwards`,
-          };
         }
       }
 
@@ -182,7 +175,13 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
     // Add new asteroids and mark the asteroid as destroyed
     setAsteroids(prevAsteroids => [
       ...prevAsteroids.map(a =>
-        a.id === asteroid.id ? { ...a, destroyed: true, animation: `fall 7s linear forwards, scaleUpFadeOut ${EXPLOSION_ANIMATION_TIME / 1000}s ease-out forwards` } : a
+        a.id === asteroid.id ?
+          {
+            ...a,
+            destroyed: true,
+            animation: a.animation + `, scaleUpFadeOut ${EXPLOSION_ANIMATION_TIME / 1000}s ease-out forwards`
+          } :
+          a
       ),
       ...newAsteroids
     ]);
@@ -381,6 +380,7 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
           width: asteroidSize,
           rotation: Math.floor(Math.random() * 365),
           hitpoints: asteroidSize,
+          animation: 'fall 7s linear forwards',
           zIndex: generateRandomZIndex()
         };
         setAsteroids((prevAsteroids) => [...prevAsteroids, newAsteroid]);
@@ -494,7 +494,7 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
               left: `${asteroid.x}%`,
               width: `${asteroid.width}%`,
               transform: `rotate(${asteroid.rotation}deg) translate(-${asteroid.width / 2}%, -${asteroid.width / 2}%)`,
-              animation: asteroid.animation ? asteroid.animation : 'fall 7s linear forwards',
+              animation: asteroid.animation,
               animationPlayState: !gameActive ? 'paused' : asteroid.destroyed ? 'paused, running' : undefined,
               zIndex: asteroid.destroyed ? 50 : asteroid.zIndex,
             }}
