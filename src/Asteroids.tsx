@@ -19,12 +19,36 @@ const ASTEROID_SIZE_INTERVALS = { // measured in percentages of the container's 
   large: 20
 }
 const POWERUP_WIDTH_PERCENTAGE = 2
-const POWERUP_SCORE_INTERVAL = 150; // every time the score reaches a multiple of this, a powerup ball is generated
+const POWERUP_SCORE_INTERVAL = 100; // every time the score reaches a multiple of this, a powerup ball is generated
 const LASER_STRENGTH = 7
 const DEFAULT_LASER_FIRING_INTERVAL = 500
 const POWERUP_STRENGTH = 2 / 5
 const POWERUP_DURATION = 5000
 const EXPLOSION_ANIMATION_TIME = 200
+
+export interface AnimatedType {
+  id: string;
+}
+
+interface LaserType extends AnimatedType {
+  x: number
+  zIndex: number
+  color: string
+}
+
+interface AsteroidType extends AnimatedType {
+  x: number
+  width: number
+  destroyed?: boolean
+  rotation: number
+  hitpoints: number
+  zIndex: number
+  animation?: string
+}
+
+interface PowerupType extends AnimatedType {
+  x: number
+}
 
 interface AsteroidsProps {
   gameWidth?: string,
@@ -45,16 +69,16 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
   // all refs are used for calculating collisions between game elements
   const shipRef = useRef<HTMLImageElement>(null);
   const shipPositionRef = useRef<number>(0);
-  const laserRefs = useRef<{ [key: number]: HTMLDivElement | null }>([]);
-  const asteroidRefs = useRef<{ [key: number]: HTMLDivElement | null }>([]);
-  const powerUpRefs = useRef<{ [key: number]: HTMLDivElement | null }>([]);
+  const laserRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const asteroidRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const powerUpRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const containerRef = useRef<HTMLDivElement>(null)
 
   const [shipCenterXPosition, setShipCenterXPosition] = useState(50);
 
-  const [lasers, setLasers] = useState<any[]>([]);
-  const [asteroids, setAsteroids] = useState<any[]>([]);
-  const [powerUps, setPowerUps] = useState<any[]>([]);
+  const [lasers, setLasers] = useState<LaserType[]>([]);
+  const [asteroids, setAsteroids] = useState<AsteroidType[]>([]);
+  const [powerUps, setPowerUps] = useState<PowerupType[]>([]);
 
   // stores the timeout used to reset the ship's firing speed
   const [powerUpTimeout, setPowerUpTimeout] = useState<number | null>(null);
@@ -71,7 +95,7 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
   /**
    * Moves the ship left or right based on the keyboard click event.
    */
-  const handleKeyDown = (event: any) => {
+  const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'ArrowLeft') {
       setShipCenterXPosition((prevPos) => Math.max(SHIP_WIDTH_PERCENTAGE / 2, prevPos - SHIP_SPEED)); // Move left (bounded)
     } else if (event.key === 'ArrowRight') {
@@ -99,8 +123,8 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
    * 
    * @param asteroid - the asteroid to destroy
    */
-  const handleAsteroidDestruction = (asteroid: any) => {
-    const newAsteroids: any[] = [];
+  const handleAsteroidDestruction = (asteroid: AsteroidType) => {
+    const newAsteroids: AsteroidType[] = [];
 
     if (asteroid.width >= ASTEROID_SIZE_INTERVALS.small && containerRef.current) {
       const containerRect = containerRef.current.getBoundingClientRect();
@@ -166,7 +190,7 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
     // Remove the destroyed asteroid after a short delay
     setTimeout(() => {
       setAsteroids(prevAsteroids =>
-        prevAsteroids.filter((a: any) => a.id !== asteroid.id)
+        prevAsteroids.filter((a: AsteroidType) => a.id !== asteroid.id)
       );
     }, EXPLOSION_ANIMATION_TIME);
   };
@@ -176,7 +200,7 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
    */
   const checkAsteroidCollisions = () => {
 
-    asteroids.forEach((asteroid: any) => {
+    asteroids.forEach((asteroid: AsteroidType) => {
 
       const asteroidElement = asteroidRefs.current[asteroid.id]
       if (!asteroid.destroyed && asteroidElement) {
@@ -227,7 +251,7 @@ const Asteroids: React.FC<AsteroidsProps> = ({ gameWidth = '100vw', gameHeight =
               if (newHitpoints <= 0) { // the asteroid was destroyed
                 handleAsteroidDestruction(asteroid)
               } else { // the asteroid was damaged
-                setAsteroids((prevAsteroids: any) => prevAsteroids.map((prevAsteroid: any) => (
+                setAsteroids((prevAsteroids: AsteroidType[]) => prevAsteroids.map((prevAsteroid: AsteroidType) => (
                   prevAsteroid.id === asteroid.id ? { ...prevAsteroid, hitpoints: newHitpoints } : prevAsteroid
                 )))
               }

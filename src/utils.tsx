@@ -1,3 +1,5 @@
+import { AnimatedType } from "./Asteroids";
+
 export const generateUniqueId = () => {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = (Math.random() * 16) | 0,
@@ -91,8 +93,11 @@ export const generateAsteroidFallKeyframes = (startY: number, index: number) => 
  * @param e - the event signifying the end of the animation
  * @param setItems - the state update function
  */
-export const handleAnimationEnd = (e: any, setItems: any) => {
-    setItems((currentItems: any) =>
-        currentItems.filter((item: any) => item.id !== e.target.id)
+export const handleAnimationEnd = <T extends AnimatedType>(
+    e: React.AnimationEvent,
+    setItems: React.Dispatch<React.SetStateAction<T[]>>
+) => {
+    setItems((currentItems) =>
+        currentItems.filter((item) => item.id !== (e.target as HTMLElement).id)
     )
 }
