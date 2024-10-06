@@ -36,7 +36,7 @@ This game was developed as a self-teaching project to improve my knowledge of Re
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/asteroid-game.git
+git clone https://github.com/alexgreen0606/Asteroids.git
 ```
 
 2. Install dependencies:
